@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<h1></h1>
+{:$a=[[123],'2']}
+{$a='abc"'|escape:"html"}
+{$a}
+</body>
+</html>

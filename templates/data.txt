@@ -1,0 +1,93 @@
+{:"111"}
+\{:"}{:"}
+
+{:$var="hello"'_''world'}
+{:$test=[1,0]}
+{:@var[1][@test[1]]}
+
+\{{:$aa="1"}{:
+	if 1==0
+}
+	true
+{:
+	else
+}
+	false
+{:
+	/if
+}
+{:
+	$a=[[123],'2'..'3']
+}
+\{:($a|print_r:true)*3} = {:($a|print_r:true)*3}
+is not the same as:
+\{:($a|print_r)*3} = {:($a|print_r:true)*3}
+hello world
+{:$x='hello_world'}{:hello_world("hello_world")($x)}
+{*now there goes mutiline text
+asdad*** ***
+*}
+{*:$x?$y:$z*}
+{:'some long string for escaping'|escape:filter='capitalize':firstword=true}{:'\n'}
+{:hello_world(
+	'some long string for escaping'|escape:filter='capitalize'
+,z=1)}
+{$a='abc"'|escape:"html"}
+{*$a='abc"'|escape:24=5,25=6,'html' .. ["cda'"]|test*}
+{*and another comment which should be removed*}
+{*:test()*}
+	{:loop $k,v each(['',123,'a'='b'])}
+		{$k}={$v}
+	{/loop}
+{:while false==(@x254<=1)}
+{/while}
+{*:die()*}
+\\{:""}
+
+{:if hello_world(124)}
+	{:for $i=0; $i<20; $i++}
+		{:($x(($x?hello_world($i):$d())?$i:0)%2?'odd: '..$i:'even: '..$i)..'\n'}
+	{/for}
+	{$a="hello_world"}
+	{:for $i=1..$a(5)}
+		{:'\n'..$i}
+	{/for}
+
+	{:for $i=1..5+24}
+		{:$x=hello_world_args(12,['hello'='world'],25)}
+	{/for}
+{:elseif $a=='50'}
+	{$a('a','b','c')}
+{:else}
+
+{/if}
+{**}
+
+{$stdObject->a='aaa'}
+
+{$xm=[25=["xxx''sdf\"=[1=$stdObject]]]}
+{$hgf='1'}
+{$b=20}
+{$xm[25]."xxx''sdf\".$hgf->test('hello_' "world",254,hello_world(test=$x+20-150*24/hello_world(15)))($stdObject)->hello = '
+
+'+0+hello_world(''..$b,[1,2,3="a"])}
+<?=
+
+{$_REQUEST|print_r:true}
+	{:hello_world("{$_REQUEST}")}
+	{$_post[15][]=25}
+	{$xxx=[15=1,254=[128=15]]}
+	{$xxx[15]+24}
+	{$a=[b=[c=5]]}
+	{$c=[d='c']}
+	{$d='d'}
+	{$b='b'}
+	{$hello=128.32+$xxx.254[128]-$a.$b[$c[$d]]*hello_world()..("25"+54) - @stdObject->unknown_var}
+	{:@xhello}
+	{:if
+	1} intermediary text
+	on multiple
+	lines
+	{/if}
+
+?>
