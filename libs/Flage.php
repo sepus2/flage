@@ -2,10 +2,12 @@
 
 if(!defined('__DIR__')) define('__DIR__',dirname(__FILE__));
 
+define('__PARENT_DIR__',dirname(dirname(__FILE__)));
+
 class Flage {
 	protected $_current_dir = '';
 	protected $_dir_templates = 'templates';
-	protected $_absolute_dir_templates = __DIR__.'/templates';
+	protected $_absolute_dir_templates = __PARENT_DIR__.'/templates';
     protected $_dir_compiled = 'templates_c';
     protected $_dir_plugins = 'plugins';
     protected $_dir_callback = 'plugins/callbacks';
@@ -14,6 +16,8 @@ class Flage {
     protected $_file_hash_salt = '';
     protected $forceRecompile = false;
     protected $disableCache = false;
+
+    protected $rootPath = __PARENT_DIR__;
 
     protected $data = array();
 
@@ -104,7 +108,7 @@ class Flage {
 		//	$filename = $this->_dir_templates.'/'.$file;
 		//$fName = $this->_file_hash_salt.md5($filename).'.php';
         $fName = $this->generateCacheName($file);
-		$template = $this->_dir_compiled.'/'.$fName;
+		$template = __PARENT_DIR__.'/'.$this->_dir_compiled.'/'.$fName;
 		if(file_exists($template)){
 			return array(
 				'modified'=>filemtime($this->getFilePath($filename)) > filemtime($template)
@@ -136,7 +140,7 @@ class Flage {
         //	$filename = $this->_dir_templates.'/'.$file;
         //$fName = $this->_file_hash_salt.md5($filename).'.php';
         $fName = $this->generateCacheName($filename);
-        $template = $this->_dir_compiled.'/'.$fName;
+        $template = __PARENT_DIR__.'/'.$this->_dir_compiled.'/'.$fName;
         return array(
             'original'=>0
             ,'filename'=>$filename
@@ -238,9 +242,9 @@ class Flage {
     }
     function storeCompiled($filename,$content){
         if(!$this->disableCache){
-            if(!file_exists($this->_dir_compiled)){
-                mkdir($this->_dir_compiled);
-                chmod($this->_dir_compiled,0777);
+            if(!file_exists(__PARENT_DIR__.'/'.$this->_dir_compiled)){
+                mkdir(__PARENT_DIR__.'/'.$this->_dir_compiled);
+                chmod(__PARENT_DIR__.'/'.$this->_dir_compiled,0777);
             }
 
             //$source_info = $this->getInfo($source);

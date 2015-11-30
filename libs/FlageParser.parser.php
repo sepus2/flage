@@ -2627,7 +2627,7 @@ class FlageParserBlock extends FlageTag {
     {
         $this->arguments = $parser->_tokenize_named_arguments($tagRest);
 
-        $block_name = $this->getName();
+        $block_name = $parser->getFlage()->getCurrentInfo()['compiled_filename'].'-'.$this->getName();
 
         $block_name_prefix = '';
         do{
