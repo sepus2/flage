@@ -734,7 +734,10 @@ class FlageParser {
 		} else if(count($args)<6) { // number
 			$data = $args[3];
 			$type = 'number';
-		} else { // variable or 
+        } else if(count($args)==6) { // scientific number
+            $data = $args[3];
+            $type = 'number';
+		} else { // variable or
 			$data = $args[7];
 			$type = $args[6]=='$' || $args[6]=='@' ? 'var' : 'literal';
 			$suppress = $args[6]=='@';
@@ -812,20 +815,20 @@ class FlageParser {
                         )
                         ,'string'=>array(
                             ''=>'_end'
-                            ,'..'=>'_op_concat'
+                            ,'.+'=>'_op_concat'
                             //,'string'=>'_string_string'
                             ,'literal'=>'_block_arg'
                             ,'string'=>'_block_arg'
                         )
                         ,'number'=>array(
                             ''=>'_end'
-                            ,'..'=>'_op_concat'
+                            ,'.+'=>'_op_concat'
                             ,'literal'=>'_block_arg'
                             ,'string'=>'_block_arg'
                         )
                         ,'type_value'=>array(
                             ''=>'_end'
-                            ,'..'=>'_op_concat'
+                            ,'.+'=>'_op_concat'
                             ,'literal'=>'_block_arg'
                         )
                         ,'var'=>array(
@@ -971,7 +974,7 @@ class FlageParser {
                         ,'?'=>'_op_cond'
                         ,'('=>'_var_func'
                         ,'->'=>'_op_obj_offset'
-                        ,'..'=>'_op_concat'
+                        ,'.+'=>'_op_concat'
                         ,'=='=>'_op'
                         ,'==='=>'_op'
                         ,'!='=>'_op'
@@ -993,7 +996,7 @@ class FlageParser {
                         ,'%'=>'_op'
                         ,'|'=>'_op_modifier'
                         ,'?'=>'_op_cond'
-                        ,'..'=>'_op_concat'
+                        ,'.+'=>'_op_concat'
                         ,'=='=>'_op'
                         ,'==='=>'_op'
                         ,'!='=>'_op'
@@ -1015,7 +1018,7 @@ class FlageParser {
                         ,'%'=>'_op'
                         ,'|'=>'_op_modifier'
                         ,'?'=>'_op_cond'
-                        ,'..'=>'_op_concat'
+                        ,'.+'=>'_op_concat'
                         ,'=='=>'_op'
                         ,'==='=>'_op'
                         ,'!='=>'_op'
@@ -1036,7 +1039,7 @@ class FlageParser {
                         ,'%'=>'_op'
                         ,'|'=>'_op_modifier'
                         ,'?'=>'_op_cond'
-                        ,'..'=>'_op_concat'
+                        ,'.+'=>'_op_concat'
                         ,'string'=>'_string_string'
                         ,'=='=>'_op'
                         ,'==='=>'_op'
@@ -1069,7 +1072,7 @@ class FlageParser {
                         ,'-='=>'_op_var_assign'
                         ,'*='=>'_op_var_assign'
                         ,'/='=>'_op_var_assign'
-                        ,'..'=>'_op_concat'
+                        ,'.+'=>'_op_concat'
                         ,'=='=>'_op'
                         ,'==='=>'_op'
                         ,'!='=>'_op'
@@ -1103,6 +1106,14 @@ class FlageParser {
                         ,'string'=>'_op_value'
                         ,'('=>'_group_start'
                     )
+                    ,'+='=>array(
+                        'var'=>'_op_var'
+                        ,'literal'=>'_op_value'
+                        ,'type_value'=>'_op_value'
+                        ,'number'=>'_op_value'
+                        ,'string'=>'_op_value'
+                        ,'('=>'_group_start'
+                    )
                     ,'-'=>array(
                         'var'=>'_op_var'
                         ,'literal'=>'_op_value'
@@ -1127,7 +1138,7 @@ class FlageParser {
                         ,'string'=>'_op_value'
                         ,'('=>'_group_start'
                     )
-                    ,'..'=>array(
+                    ,'.+'=>array(
                         'var'=>'_op_var'
                         ,'literal'=>'_op_value'
                         ,'type_value'=>'_op_value'
@@ -1266,18 +1277,18 @@ class FlageParser {
         )
         ,'string'=>array(
             ''=>'_end'
-            ,'..'=>'_op_concat'
+            ,'.+'=>'_op_concat'
             ,'string'=>'_string_string'
             ,'literal'=>'_block_arg'
         )
         ,'number'=>array(
             ''=>'_end'
-            ,'..'=>'_op_concat'
+            ,'.+'=>'_op_concat'
             ,'literal'=>'_block_arg'
         )
         ,'type_value'=>array(
             ''=>'_end'
-            ,'..'=>'_op_concat'
+            ,'.+'=>'_op_concat'
             ,'literal'=>'_block_arg'
         )
     );
@@ -1780,7 +1791,7 @@ class FlageParser {
             // (1) - extract variable index
             .'\$var(\d+)\$'
             // (2) - All possible operations unary or binary, assignments, conditions, (, ), ...
-            .'|(\+=|\-=|\*=|\/=|\+\+|\-\-|\|\||&&|\||&|\*|/|\+|\.\.|\.|\->|\-|!==|===|!=|==|>==|<==|>=|<=|>|<|\[|\]|\(|\)|=|,|%|\?|:)'
+            .'|(\+=|\-=|\*=|\/=|\+\+|\-\-|\|\||&&|\||&|\*|/|\+|\.\+|\.|\->|\-|!==|===|!=|==|>==|<==|>=|<=|>|<|\[|\]|\(|\)|=|,|%|\?|:)'
             // (3) - All extra whitespaces, keep them for lines increment
             .'|(\s+)'
             // (4) - other... If it is not defined by previous pattern, then we have to catch it and throw an exception
@@ -1887,7 +1898,7 @@ class FlageParser {
             // (1) - extract variable index
             .'\$var(\d+)\$'
             // (2) - All possible operations unary or binary, assignments, conditions, (, ), ...
-            .'|(\+=|\-=|\*=|\/=|\+\+|\-\-|\|\||&&|\||&|\*|/|\+|\.\.|\.|\->|\-|!==|===|!=|==|>==|<==|>=|<=|>|<|\[|\]|\(|\)|=|,|%|\?|:)'
+            .'|(\+=|\-=|\*=|\/=|\+\+|\-\-|\|\||&&|\||&|\*|/|\+|\.\+|\.|\->|\-|!==|===|!=|==|>==|<==|>=|<=|>|<|\[|\]|\(|\)|=|,|%|\?|:)'
             // (3) - All extra whitespaces, keep them for lines increment
             .'|(\s+)'
             // (4) - other... If it is not defined by previous pattern, then we have to catch it and throw an exception
@@ -1921,7 +1932,7 @@ class FlageParser {
 				continue;
 			}
 
-            // nextStmt will contain token type. If it is an op, it will contain op symbol, ex +, -, ...
+            // nextStmt will contain token type. If it is an op, it will contain op symbol, ex +, -, .+.
 			if($stack['type']=='op'){
 				$nextStmt = $stack['data'];
 			} else {

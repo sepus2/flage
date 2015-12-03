@@ -1,4 +1,19 @@
+{$var = 1}
+{$var}
+{$var += 2}
+{$var}
+<div>{$var = 1 + 1 * 2 }{$var} : 3</div>
+<div>{$var2=$var++}{$var} : 4</div>
+{: print_r(["{","}"],true) }
+{$a=(1.0e-1).+'2'}
+{$a}
+{$var="a".+'b'}
+{$var=["foo"="bar"]}
+{$var.foo}
+{$var['foo']}
 {:include("default.tpl")}
+
+
 
 {:block_body name="header-bar" test=1}
 	Block body: !!!{$block->arguments.test}!!!

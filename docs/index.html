@@ -1,0 +1,224 @@
+<html>
+<head>
+</head>
+<body>
+<p>
+    Powerful, flexible and efficient templating engine for PHP. Compiled performance is very close to the same code written in php.</p>
+<h2>
+    Basics</h2>
+<p class="item">
+    Flage statement starts with {: or {$ and ends with }<br />
+    Ex: {: print_r([&quot;{&quot;,&quot;}&quot;],true) } OR {$var}</p>
+<p class="item">
+    tags should be opened with {tag ...} and closed with {/tag}<br />
+    {:if true} Valid {:else} Not valid {/if}</p>
+<p class="item">
+    Supported values:</p>
+<p class="item">
+    <strong>numbers </strong>: 1 , 1.0 , 1.0e-1</p>
+<p class="item">
+    <strong>strings </strong>: &quot;double quote&quot;, &#39;single quote\n&#39;</p>
+<p class="item">
+    <strong>booleans</strong>: true, false</p>
+<p class="item">
+    <strong>null</strong></p>
+<p class="item">
+    <strong>functions </strong>: literal( named_argument = &#39;statement&#39;, &#39;positional argument&#39;)</p>
+<p class="item">
+    <strong>tags </strong>: if, else, for, block, ...</p>
+<p class="item">
+    <strong>variables </strong>: $var</p>
+<h2>
+    Operators</h2>
+<div class="item">
+    Assignment (=, +=, -= )
+    <div class="description">
+        <div style="margin-left: 40px;">
+            {$var = 1}{$var} : 1</div>
+        <div style="margin-left: 40px;">
+            {$var+=2}{$var} : 3</div>
+    </div>
+</div>
+<div class="item">
+    Math (+, -, /, %, *, ++, --)
+    <div class="description">
+        <div style="margin-left: 40px;">
+            {$var = 1 + 1 * 2 }{$var} : 3</div>
+        <div style="margin-left: 40px;">
+            {$var2 = $var++}{$var} : 4</div>
+    </div>
+</div>
+<div class="item">
+    Logic (&amp;&amp;, ||)
+    <div class="description" style="margin-left: 40px;">
+        {:if (true || false) &amp;&amp; true}</div>
+</div>
+<div class="item">
+    Comparisons (==, !=, &lt;, &gt;, &gt;=, &lt;=, ===, !==)
+    <div class="description" style="margin-left: 40px;">
+        {:if true==false || &quot;1&quot;===1}</div>
+</div>
+<div class="item">
+    Others (.+, |, ., [], (), ?:, \{)
+    <div class="description" style="margin-left: 40px;">
+        {$var=&quot;a&quot;.+&#39;b&#39;}</div>
+    <div class="description" style="margin-left: 40px;">
+        {$var=[&quot;foo&quot;=&quot;bar&quot;]}</div>
+    <div class="description" style="margin-left: 40px;">
+        {$var.foo}</div>
+    <div class="description" style="margin-left: 40px;">
+        {$var[&#39;foo&#39;]}</div>
+    <div class="description" style="margin-left: 40px;">
+        \{ - will always output {</div>
+    <h2 class="description">
+        Functions</h2>
+    <div class="description">
+        Any <strong>whitelisted </strong>php function is allowed.</div>
+    <div class="description">
+        To create Flage specific function can be created in plugins/functions/function_name.php, then create a function flage_function_[function_name]($flage,$arguments,$line,$col)</div>
+    <div class="description">
+        Where</div>
+    <div class="description">
+        $flage is the instance of Flage object</div>
+    <div class="description">
+        $arguments is an array of arguments (named or positioned)</div>
+    <div class="description">
+        $line is the line in the template file</div>
+    <div class="description">
+        $col is the column in template file</div>
+    <div class="description">
+        Example:</div>
+    <div class="description">
+				<pre style="background-color:#ffffff;color:#000000;font-family:'Courier New';font-size:7.2pt;">
+<span style="color:#000080;background-color:#f7faff;font-weight:bold;">function </span><span style="background-color:#f7faff;">flage_function_include(</span><span style="color:#660000;background-color:#f7faff;">$flage</span><span style="background-color:#f7faff;">, </span><span style="color:#660000;background-color:#f7faff;">$arguments</span><span style="background-color:#f7faff;">, </span><span style="color:#660000;background-color:#f7faff;">$line</span><span style="background-color:#f7faff;">, </span><span style="color:#660000;background-color:#f7faff;">$col</span><span style="background-color:#f7faff;">){
+</span><span style="background-color:#f7faff;">    </span><span style="color:#660000;background-color:#f7faff;">$parsedArgs</span><span style="background-color:#f7faff;">=flage_generate_args(</span><span style="color:#000080;background-color:#f7faff;font-weight:bold;">array</span><span style="background-color:#f7faff;">(</span><span style="color:#008000;background-color:#f7faff;font-weight:bold;">&#39;filename&#39;</span><span style="background-color:#f7faff;">,</span><span style="color:#008000;background-color:#f7faff;font-weight:bold;">&#39;inline&#39;</span><span style="background-color:#f7faff;">=&gt;</span><span style="color:#000080;background-color:#f7faff;font-weight:bold;">array</span><span style="background-color:#f7faff;">(</span><span style="color:#008000;background-color:#f7faff;font-weight:bold;">&#39;default&#39;</span><span style="background-color:#f7faff;">=&gt;</span><span style="color:#000080;background-color:#f7faff;font-weight:bold;">false</span><span style="background-color:#f7faff;">)),</span><span style="color:#660000;background-color:#f7faff;">$arguments</span><span style="background-color:#f7faff;">,</span><span style="color:#660000;background-color:#f7faff;">$line</span><span style="background-color:#f7faff;">,</span><span style="color:#660000;background-color:#f7faff;">$col</span><span style="background-color:#f7faff;">);
+</span><span style="background-color:#f7faff;">    </span><span style="color:#660000;background-color:#f7faff;">$filename </span><span style="background-color:#f7faff;">= </span><span style="color:#660000;background-color:#f7faff;">$parsedArgs</span><span style="background-color:#f7faff;">[</span><span style="color:#008000;background-color:#f7faff;font-weight:bold;">&#39;filename&#39;</span><span style="background-color:#f7faff;">];
+</span></pre>
+        <p>
+            <span style="background-color:#f7faff;">And the call would be {:include(&quot;test.flg&quot;)} OR {:include(template=&quot;test.flg&quot;)}</span></p>
+        <h2>
+            <span style="background-color:#f7faff;">Modifiers</span></h2>
+        <p>
+            <span style="background-color:#f7faff;">Modifiers is a linux piping style of calling a function. A modifier can be any whitelisted php function, flage function or flage modifier in plugins/modifiers/modifier_name.php.</span></p>
+    </div>
+    <h2 class="description">
+        Tags</h2>
+    <div class="description">
+        <strong>if [statement]</strong></div>
+    <div class="description" style="margin-left: 40px;">
+        {:if false || hello_world([&#39;foo&#39;=&#39;bar&#39;]).foo===&quot;bar&quot;}</div>
+    <div class="description" style="margin-left: 40px;">
+        true</div>
+    <div class="description" style="margin-left: 40px;">
+        {/if}</div>
+    <div class="description">
+        <strong>else, elseif</strong></div>
+    <div class="description" style="margin-left: 40px;">
+        {:if false}</div>
+    <div class="description" style="margin-left: 40px;">
+        not true</div>
+    <div class="description">
+        <div class="description" style="margin-left: 40px;">
+            {:elseif false}</div>
+        <div class="description" style="margin-left: 40px;">
+            not true</div>
+        <p style="margin-left: 40px;">
+            {:else}</p>
+    </div>
+    <div class="description" style="margin-left: 40px;">
+        true</div>
+    <div class="description" style="margin-left: 40px;">
+        {/if}</div>
+    <div class="description">
+        &nbsp;</div>
+    <div class="description">
+        <strong>for [statement];[statement];[statement]</strong></div>
+    <div class="description" style="margin-left: 40px;">
+        {:for $i=1;$i&lt;=10;$i++}</div>
+    <div class="description">
+        <strong>for [statement]..[statement]</strong></div>
+    <div class="description" style="margin-left: 40px;">
+        {:for $i=1..10}</div>
+    <div class="description">
+        <strong>while [statement]</strong></div>
+    <div class="description" style="margin-left: 40px;">
+        {:while $i&lt;10}</div>
+    <div class="description">
+        <strong>loop</strong></div>
+    <div class="description" style="margin-left: 40px;">
+        {:loop $k,$v each([1=1,2=2,3=3])}</div>
+    <div class="description" style="margin-left: 40px;">
+        &lt;p&gt;$k=$v&lt;p&gt;</div>
+    <div class="description" style="margin-left: 40px;">
+        {/loop}</div>
+    <div class="description" style="margin-left: 40px;">
+        {:loop $v hello_world([1,2,3])}</div>
+    <div class="description">
+        <div class="description" style="margin-left: 40px;">
+            &lt;p&gt;$v&lt;p&gt;</div>
+        <p style="margin-left: 40px;">
+            {/loop}</p>
+    </div>
+    <div class="description">
+        <strong>block</strong></div>
+    <div class="description" style="margin-left: 40px;">
+        {:block name=&quot;title&quot;}World{/block}</div>
+    <div class="description">
+        <strong>block_body, print_block</strong></div>
+    <div class="description" style="margin-left: 40px;">
+        default.flg</div>
+    <div class="description" style="margin-left: 80px;">
+        &lt;html&gt;</div>
+    <div class="description" style="margin-left: 80px;">
+        &nbsp; &lt;head&gt;</div>
+    <div class="description" style="margin-left: 80px;">
+        &nbsp;&nbsp;&nbsp; &lt;title&gt;{:block name=&quot;title&quot;}World{/block}&lt;/title&gt;</div>
+    <div class="description" style="margin-left: 80px;">
+        &nbsp; &lt;/head&gt;</div>
+    <div class="description" style="margin-left: 80px;">
+        &lt;/html&gt;</div>
+    <div class="description" style="margin-left: 40px;">
+        a1.flg</div>
+    <div class="description" style="margin-left: 80px;">
+        {:include(&quot;default.flg&quot;)}</div>
+    <div class="description">
+        <div class="description" style="margin-left: 80px;">
+            {:block_body name=&quot;title&quot;}</div>
+        <div class="description" style="margin-left: 80px;">
+            Hello - {:print_block($block-&gt;parent)}</div>
+        <div class="description" style="margin-left: 80px;">
+            {/block}</div>
+    </div>
+    <div class="description" style="margin-left: 40px;">
+        a2.flg</div>
+    <div class="description">
+        <div class="description" style="margin-left: 80px;">
+            {:include(&quot;a1.flg&quot;)}</div>
+        <div class="description">
+            <div class="description" style="margin-left: 80px;">
+                {:block_body name=&quot;title&quot;}</div>
+            <div class="description" style="margin-left: 80px;">
+                {:print_block($block-&gt;parent)} !!!</div>
+            <div class="description" style="margin-left: 80px;">
+                {/block}</div>
+            <div class="description">
+                <div class="description" style="margin-left: 80px;">
+                    &lt;html&gt;</div>
+                <div class="description" style="margin-left: 80px;">
+                    &nbsp; &lt;head&gt;</div>
+                <div class="description" style="margin-left: 80px;">
+                    &nbsp;&nbsp;&nbsp; &lt;title&gt;Hello - World !!!&lt;/title&gt;<br />
+                    <div class="description">
+                        &nbsp; &lt;/head&gt;</div>
+                    <div class="description">
+                        &lt;/html&gt;</div>
+                </div>
+                <div class="description" style="margin-left: 80px;">
+                    &nbsp;</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
